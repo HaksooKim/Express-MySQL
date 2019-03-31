@@ -22,6 +22,20 @@ app.get('/persons', function(req, res){
   });
 });
 
+app.get('/persons_insert', function(req, res){
+	let name = req.query.name;
+	let age = req.query.age;
+	
+	console.log("> Data : " + name + ", " + age);
+	
+	connection.query("insert into persons values ((select max(id)+1 from persons a), '" + name + "', " + age + ")", function(err, rows) {
+	    if(err) throw err;
+
+	    console.log('Inserted', name);
+	    res.send('Add Success');
+	  });
+	});
+
 app.listen(app.get('port'), function () {
   console.log('Express server listening on port ' + app.get('port'));
 });
